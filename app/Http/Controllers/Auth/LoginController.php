@@ -3,7 +3,12 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Student;
+use App\User;
+use App\UserSocialAccount;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Laravel\Socialite\Facades\Socialite;
 
 class LoginController extends Controller
@@ -26,7 +31,7 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    protected $redirectTo = '/';
 
     /**
      * Create a new controller instance.
@@ -38,15 +43,64 @@ class LoginController extends Controller
         $this->middleware('guest')->except('logout');
     }
 
+    public function logout(Request $request)
+    {
+        auth()->logout(); //CIERRA SESION
+        session()->flush(); // VACIA LAS SESIONES
+        return redirect('/login');
+    }
+
     public function redirectToProvider(string $driver)
     {
         return Socialite::driver($driver)->redirect();
+        //dd('here');
     }
 
     public function handleProviderCallback(string $driver)
     {
+        if (!request()->has('code') || request()->has('denied')) {
+            session()->flash('message', ['danger', __('Inicio de session cancelado')]);
+            return redirect('login');
+        }
         $socialUser = Socialite::driver($driver)->user();
 
-        dd($socialUser);
+        $user = null;
+        $success = true;
+        $email = $socialUser->email;
+        $check = User::whereEmail($email)->first();
+        if ($check) {
+            $user = $check;
+        } else {
+
+            DB::beginTransaction();
+            try {
+                $user = User::create([
+                    'name' => $socialUser->name,
+                    'email' => $email,
+
+                ]);
+                UserSocialAccount::create([
+                    'user_id' => $user->id,
+                    'provider' => $driver,
+                    'provider_uid' => $socialUser->id,
+                ]);
+                Student::create([
+                    'user_id' => $user->id,
+
+                ]);
+            } catch (\Exception $exception) {
+                $success = $exception->getMessage();
+                DB::rollback();
+            }
+        }
+
+        if ($success === true) {
+            DB::commit();
+            auth()->loginUsingId($user->id);
+            return redirect(route('home'));
+        }
+        session()->flash('message', ['danger', $success]);
+        return redirect('login');
+        // dd($socialUser);
     }
 }
