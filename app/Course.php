@@ -46,6 +46,22 @@ class Course extends Model
     const PENDING = 2;
     const REJECTED = 3;
 
+    // CONTEO DE REGISTROS BASADO EN RELACIONES (LO HACE EN CADA CONSULTA)
+    protected $withCount = ['reviews', 'students'];
+
+    // PARAMETERS
+    public function pathAttachment()
+    {
+        return "/images/courses/" . $this->picture;
+    }
+
+    public function getRouteKeyName() //DEVUELVE EL ID DEL CURSO BASADO EN EL SLUG
+
+    {
+        return 'slug';
+    }
+
+    //RELATIONSHIPS
     public function category()
     {
         return $this->belongsTo('App\Category')->select('id', 'name');
@@ -80,4 +96,24 @@ class Course extends Model
     {
         return $this->belongsTo('App\Teacher');
     }
+
+    //ACCESSORS
+
+    public function getRatingAttribute()
+    {
+        return $this->reviews->avg('rating');
+    }
+
+    //FUNCTIONS
+
+    public function relatedCourses()
+    {
+        return Course::with('reviews')
+            ->whereCategoryId($this->category->id) //whereCategoryId es un metodo que ya viene de con el modelo
+            ->where('id', '!=', $this->id) // != DISTINTO DE
+            ->latest()
+            ->limit(6) //SOLO 6 RESULTADOS
+            ->get();
+    }
+
 }
