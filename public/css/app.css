@@ -16405,6 +16405,116 @@ readers do not read off random characters that represent icons */
   font-family: "Font Awesome 5 Brands";
 }
 
+.card {
+  box-shadow: 2px 2px 20px rgba(0, 0, 0, 0.3);
+  border: none;
+  margin-bottom: 30px;
+}
+
+.card-01 .card-body {
+  position: relative;
+  padding-top: 40px;
+}
+
+.card-01 .badge-box {
+  position: absolute;
+  top: -20px;
+  left: 50%;
+  width: 100px;
+  height: 100px;
+  margin-left: -50px;
+  text-align: center;
+}
+
+.card-01 .badge-box i {
+  background: #DFC717;
+  color: #fff;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  line-height: 50px;
+  text-align: center;
+  font-size: 20px;
+}
+
+.card-01.height-fix {
+  height: 455px;
+  overflow: hidden;
+}
+
+.card-01.height-fix .card-img-top {
+  width: auto !important;
+}
+
+.media {
+  background: #fff;
+  position: relative;
+  margin-bottom: 15px;
+}
+
+.media img {
+  width: 200px;
+  margin: 0;
+  height: 136px;
+}
+
+.media-body {
+  border: 1px solid #bcbcbc;
+  border-left: 0;
+  height: 136px;
+}
+
+.media .price {
+  float: left;
+  width: 100%;
+  font-size: 30px;
+  font-weight: 600;
+  color: #4765AB;
+}
+
+.media .price small {
+  display: block;
+  font-size: 17px;
+  color: #232323;
+}
+
+.media .stats {
+  float: left;
+  width: 100%;
+  margin-top: 10px;
+}
+
+.media .stats span {
+  float: left;
+  margin-right: 10px;
+  font-size: 15px;
+}
+
+.media .stats span i {
+  margin-right: 7px;
+  color: #4765AB;
+}
+
+.media .address {
+  float: left;
+  width: 100%;
+  font-size: 14px;
+  margin-top: 5px;
+  color: #888;
+}
+
+.media .fav-box {
+  position: absolute;
+  right: 10px;
+  font-size: 20px;
+  top: 4px;
+  color: #E74C3C;
+}
+
+.map-box {
+  background-color: #A3CCFF;
+}
+
 body {
   font-family: "Hind Vadodara", sans-serif;
 }
