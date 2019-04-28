@@ -13,6 +13,8 @@
         @include('partials.courses.requirements',['requirements' => $course->requirements])
         @include('partials.courses.description')
         @include('partials.courses.related')
+        @include('partials.courses.form_review')
+        @include('courses.reviews')
     </div>
 </div>
 @endsection

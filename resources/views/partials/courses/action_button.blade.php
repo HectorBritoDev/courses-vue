@@ -12,7 +12,7 @@
     @can('subscribe', \App\Course::class)
 
     {{-- Boton para ir a la pagina de planes y pagos --}}
-    <a class="btn btn-subscribe btn-bottom btn-block" href="#">
+    <a class="btn btn-subscribe btn-bottom btn-block" href="{{ route('subscriptions.plans') }}">
         <i class="fa fa-bolt"> {{ __('Suscribirme') }}</i>
     </a>
     @else
@@ -20,7 +20,7 @@
     <!-- El usuario ya tiene algun plan y tenemos que saber si se puede inscribir en el curso
          osea, si ya esta inscrito o no en el curso)-->
     @can('inscribe', $course)
-    <a class="btn btn-subscribe btn-bottom btn-block" href="#">
+    <a class="btn btn-subscribe btn-bottom btn-block" href="{{ route('courses.inscribe',['slug'=>$course->slug]) }}">
         <i class="fa fa-bolt"> {{ __('Inscribirme') }}</i>
     </a>
 
