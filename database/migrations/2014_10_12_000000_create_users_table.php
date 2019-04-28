@@ -32,7 +32,7 @@ class CreateUsersTable extends Migration
             $table->string('stripe_id')->nullable();
             $table->string('card_brand')->nullable();
             $table->timestamp('trial_ends_at')->nullable();
-
+            $table->integer('card_last_four')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });
