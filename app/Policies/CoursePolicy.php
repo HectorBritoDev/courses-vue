@@ -34,4 +34,10 @@ class CoursePolicy
         //hace uso de la relacion muchos a muchos :)
         return !$course->students->contains($user->student->id);
     }
+    public function review(User $user, Course $course)
+    {
+        //Comprueba a travez de contains si alguno de los estudiantes inscritos al curso es el usuario que esta autenticado
+        //hace uso de la relacion muchos a muchos :)
+        return !$course->reviews->contains('user_id', $user->id);
+    }
 }
