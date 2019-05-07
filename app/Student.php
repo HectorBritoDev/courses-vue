@@ -28,7 +28,8 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Student extends Model
 {
-    protected $fillable = ['user_id'];
+    protected $fillable = ['user_id', 'title'];
+    protected $appends = ['courses_formatted'];
 
     public function courses()
     {
@@ -38,5 +39,10 @@ class Student extends Model
     public function user()
     {
         return $this->belongsTo('App\User')->select('id', 'role_id', 'name', 'email');
+    }
+
+    public function getCoursesFormattedAttribute()
+    {
+        return $this->courses->pluck('name')->implode('<br/>');
     }
 }
