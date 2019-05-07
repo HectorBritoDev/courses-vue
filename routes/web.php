@@ -55,4 +55,16 @@ Route::group(['prefix' => 'invoices'], function () {
 
 Route::group(['prefix' => 'profile', 'middleware' => ['auth']], function () {
     Route::get('/', 'ProfileController@index')->name('profile.index');
+    Route::put('/', 'ProfileController@update')->name('profile.update');
+});
+
+Route::group(['prefix' => 'solicitude', 'middleware' => ['auth']], function () {
+    Route::post('/teacher', 'SolicitudeController@teacher')->name('solicitude.teacher');
+
+});
+
+Route::group(['prefix' => 'teacher', 'middleware' => ['auth']], function () {
+    Route::get('/courses', 'TeacherController@courses')->name('teacher.courses');
+    Route::get('/students', 'TeacherController@students')->name('teacher.students');
+    Route::post('/send_message_to_student','TeacherController@sendMessageToStudent')->name('teacher.send_message_to_student');
 });
