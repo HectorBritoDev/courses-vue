@@ -2,6 +2,8 @@
 
 namespace App;
 
+use App\Goal;
+use App\Requirement;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -50,6 +52,69 @@ class Course extends Model
 
     // CONTEO DE REGISTROS BASADO EN RELACIONES (LO HACE EN CADA CONSULTA)
     protected $withCount = ['reviews', 'students'];
+
+    protected $fillable = [
+        'teacher_id',
+        'category_id',
+        'level_id',
+        'name',
+        'description',
+        'picture',
+        'status',
+    ];
+    public static function boot()
+    {
+        parent::boot();
+
+        static::saving(function (Course $course) {
+            if (!\App::runningInConsole()) {
+                $course->slug = str_slug($course->name, '-');
+            }
+        });
+
+        static::saved(function (Course $course) {
+            if (!\App::runningInConsole()) {
+                //Si no verificamos que se esta ejecutaando en consola, cuando ejecutemos las migraciones se va a ejecutar tambien
+                if (request('requirements')) {
+                    foreach (request('requirements') as $key => $requirement_input) {
+                        //La $key es el indice o numero del ciclo, como si fuera la "i" de un "for", mientras que en $requirement_input se guarda el valor de los datos.
+                        if ($requirement_input) {
+
+                            Requirement::updateOrCreate(
+
+                                //Comprobamos si el ID existe en BD, si existe actualizamos ese registro
+                                ['id' => request('requirement_id' . $key)],
+
+                                //Si no existe lo creamos
+                                [
+                                    'course_id' => $course->id,
+                                    'requirement' => $requirement_input,
+                                ]);
+                        }
+                    }
+                }
+
+                if (request('goals')) {
+                    foreach (request('goals') as $key => $goal_input) {
+                        //La $key es el indice o numero del ciclo, como si fuera la "i" de un "for", mientras que en $goal_input se guarda el valor de los datos.
+                        if ($goal_input) {
+
+                            Goal::updateOrCreate(
+
+                                //Comprobamos si el ID existe en BD, si existe actualizamos ese registro
+                                ['id' => request('goal_id' . $key)],
+
+                                //Si no existe lo creamos
+                                [
+                                    'course_id' => $course->id,
+                                    'goal' => $goal_input,
+                                ]);
+                        }
+                    }
+                }
+            }
+        });
+    }
 
     // PARAMETERS
     public function pathAttachment()
