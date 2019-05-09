@@ -13,8 +13,11 @@ class RoleMiddleware
      * @param  \Closure  $next
      * @return mixed
      */
-    public function handle($request, Closure $next)
+    public function handle($request, Closure $next,$role)
     {
+        if (auth()->user()->role->id !== (int) $role) {
+            abort(401,__('No puedes acceder a esta zona'));
+        }
         return $next($request);
     }
 }
