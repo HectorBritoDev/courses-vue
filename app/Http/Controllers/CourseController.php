@@ -100,4 +100,38 @@ class CourseController extends Controller
 
         return back()->with('message', ['success', __('Curso enviado correctmente, recibirá un correo con cualquier información')]);
     }
+
+    public function edit($slug)
+    {
+        $course = Course::with(['requirements', 'goals'])->withCount(['requirements', 'goals'])
+            ->whereSlug($slug)->first();
+
+        $btnText = __('Actualizar curso');
+        //dd($course);
+        return view('courses.form', compact('course', 'btnText'));
+    }
+
+    public function update(CourseRequest $course_request, Course $course)
+    {
+        if (request()->hasFile('picture')) {
+            \Storage::delete('courses/' . $course->picture);
+            $picture = Helper::uploadFile('picture', 'courses');
+            $course_request->merge(['picture' => $picture]);
+        }
+        $course->update($course_request->input());
+
+        return back()->with('message', ['success', __('Curso actualizado')]);
+    }
+
+    public function destroy(Course $course)
+    {
+        // dd($course);
+        try {
+            $course->delete();
+            return back()->with('message', ['success', __('Curso eliminado correctamente')]);
+
+        } catch (\Throwable $th) {
+            return back()->with('message', ['danger', __('Error eliminando el curso: ' . $th->getMessage())]);
+        }
+    }
 }

@@ -35,9 +35,12 @@ Route::group(['prefix' => 'courses'], function () {
         Route::get('/subscribed', 'CourseController@subscribed')->name('courses.subscribed');
         Route::get('/{course}/inscribe', 'CourseController@inscribe')->name('courses.inscribe');
         Route::post('/add_review', 'CourseController@addReview')->name('courses.add_review');
-        Route::get('/create','CourseController@create')->middleware([sprintf('role:%s',\App\Role::TEACHER)])->name('course.create');
-        Route::post('/store','CourseController@store')->middleware([sprintf('role:%s',\App\Role::TEACHER)])->name('course.store');
-        Route::put('/{course}/update','CourseController@update')->middleware([sprintf('role:%s',\App\Role::TEACHER)])->name('course.update');
+
+        Route::group(['middleware' => [sprintf('role:%s', \App\Role::TEACHER)]], function () {
+
+            Route::resource('courses', 'CourseController');
+        });
+
     });
     Route::get('/{course}', 'CourseController@show')->name('courses.detail');
 
@@ -69,5 +72,17 @@ Route::group(['prefix' => 'solicitude', 'middleware' => ['auth']], function () {
 Route::group(['prefix' => 'teacher', 'middleware' => ['auth']], function () {
     Route::get('/courses', 'TeacherController@courses')->name('teacher.courses');
     Route::get('/students', 'TeacherController@students')->name('teacher.students');
-    Route::post('/send_message_to_student','TeacherController@sendMessageToStudent')->name('teacher.send_message_to_student');
+    Route::post('/send_message_to_student', 'TeacherController@sendMessageToStudent')->name('teacher.send_message_to_student');
+});
+
+Route::group(['prefix' => 'admin', 'middleware' => ['auth', sprintf('role:%s', \App\Role::ADMIN)]], function () {
+
+    Route::get('/courses', 'AdminController@courses')->name('admin.courses');
+    Route::get('/courses_json', 'AdminController@coursesJson')->name('admin.courses_json');
+    Route::post('/courses/updateStatus', 'AdminController@updateCurrentStatus');
+
+    Route::get('/students', 'AdminController@students')->name('admin.students');
+    Route::get('/students_json', 'AdminController@students_json')->name('admin.students_json');
+    Route::get('/teachers', 'AdminController@teachers')->name('admin.teachers');
+    Route::get('/teachers_json', 'AdminController@teachers_json')->name('admin.teachers_json');
 });

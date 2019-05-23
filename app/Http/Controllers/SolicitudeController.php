@@ -19,14 +19,11 @@ class SolicitudeController extends Controller
                 Teacher::create([
                     'user_id' => $user->id,
                 ]);
-
                 $success = true;
-
             } catch (\Throwable $th) {
                 DB::rollBack();
                 $success = $th->getMessage();
             }
-
             if ($success === true) {
                 DB::commit();
                 auth()->logout();
@@ -34,7 +31,6 @@ class SolicitudeController extends Controller
                 return back()->with('message', ['success', __('Felicidades, ya eres instructor en la plataforma')]);
             }
             return back()->with('message', ['danger', $success]);
-
         }
         return back()->with('message', ['danger', __('Algo ha fallado')]);
     }

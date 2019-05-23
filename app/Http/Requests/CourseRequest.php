@@ -47,6 +47,18 @@ class CourseRequest extends FormRequest
 
                     ];
                 }
+            case 'PUT':{
+                    return [
+                        'name' => 'required|min:5',
+                        'description' => 'required|min:30',
+                        'level_id' => 'required|exists:levels,id',
+                        'category_id' => 'required|exists:categories,id',
+                        'picture' => 'sometimes|image|mimes:jpg,jpeg,png',
+                        'requirements.0' => 'required_with:requirements.1', //Solo sera requerido si viene requirements.1  en el request
+                        'goals.0' => 'required_with:goals.1', //Solo sera requerido si viene goals.1  en el request
+
+                    ];
+                }
         }
     }
 }

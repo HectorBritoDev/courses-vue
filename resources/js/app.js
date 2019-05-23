@@ -22,6 +22,18 @@ window.Vue = require('vue');
 import StripeForm from './components/StripeForm.vue';
 Vue.component('stripe-form', StripeForm);
 
+import {
+    ServerTable
+} from 'vue-tables-2';
+
+Vue.use(ServerTable, {}, false, 'bootstrap4', 'default');
+
+import VueResource from 'vue-resource';
+Vue.use(VueResource);
+
+import Courses from './components/Courses.vue';
+Vue.component('courses-list', Courses);
+
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application

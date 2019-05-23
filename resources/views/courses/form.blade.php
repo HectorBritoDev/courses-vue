@@ -156,7 +156,7 @@
 
                             <div class="col-md-6">
                                 <input type="text" name="requirements[]" id="requirement1"
-                                    value="{{ old('requirements.0', ($course->requirements_count > 0 ? $course->requirement[0]->requirement : '')) }}"
+                                    value="{{ old('requirements.0', ($course->requirements_count > 0 ? $course->requirements[0]->requirement : '')) }}"
                                     class="form-control{{ $errors->has('requirements.0') ? ' is-invalid' : '' }}">
 
                                 @if ($errors->has('requirements.0'))
@@ -168,7 +168,7 @@
 
                             @if ( $course->requirements_count > 0 )
 
-                            <input type="hidden" name="requirement_id0" value="{{ $course->requierements[0]->id }}">
+                            <input type="hidden" name="requirement_id0" value="{{ $course->requirements[0]->id }}">
 
                             @endif
                         </div>
@@ -180,7 +180,7 @@
 
                             <div class="col-md-6">
                                 <input type="text" name="requirements[]" id="requirement2"
-                                    value="{{ old('requirements.1', ($course->requirements_count > 1 ? $course->requirement[1]->requirement : '')) }}"
+                                    value="{{ old('requirements.1', ($course->requirements_count > 1 ? $course->requirements[1]->requirement : '')) }}"
                                     class="form-control{{ $errors->has('requirements.1') ? ' is-invalid' : '' }}">
 
                                 @if ($errors->has('requirements.1'))
@@ -192,7 +192,7 @@
 
                             @if ( $course->requirements_count > 1 )
 
-                            <input type="hidden" name="requirement_id1" value="{{ $course->requierements[1]->id }}">
+                            <input type="hidden" name="requirement_id1" value="{{ $course->requirements[1]->id }}">
 
                             @endif
                         </div>
@@ -212,7 +212,7 @@
 
                             <div class="col-md-6">
                                 <input type="text" name="goals[]" id="goal1"
-                                    value="{{ old('goals.0', ($course->goals_count > 0 ? $course->goal[0]->goal : '')) }}"
+                                    value="{{ old('goals.0', ($course->goals_count > 0 ? $course->goals[0]->goal : '')) }}"
                                     class="form-control{{ $errors->has('goals.0') ? ' is-invalid' : '' }}">
 
                                 @if ($errors->has('goals.0'))
@@ -236,7 +236,7 @@
 
                             <div class="col-md-6">
                                 <input type="text" name="goals[]" id="goal2"
-                                    value="{{ old('goals.1', ($course->goals_count > 1 ? $course->goal[1]->goal : '')) }}"
+                                    value="{{ old('goals.1', ($course->goals_count > 1 ? $course->goals[1]->goal : '')) }}"
                                     class="form-control{{ $errors->has('goals.1') ? ' is-invalid' : '' }}">
 
                                 @if ($errors->has('goals.1'))
@@ -248,7 +248,7 @@
 
                             @if ( $course->goals_count > 1 )
 
-                            <input type="hidden" name="goal_id1" value="{{ $course->goal[1]->id }}">
+                            <input type="hidden" name="goal_id1" value="{{ $course->goals[1]->id }}">
 
                             @endif
                         </div>

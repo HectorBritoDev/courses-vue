@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\User;
-use App\Student;
+use App\Course;
 use App\Mail\MessageToStudent;
+use App\Student;
+use App\User;
 use Illuminate\Support\Facades\Mail;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -29,8 +30,8 @@ class TeacherController extends Controller
     {
         $info = request('info'); //Recuperamos la información que envia Ajax
         $data = [];
-        parse_str($info,$data); // Parseamos (pasamos la información ya formateada) la información de $info en $data
-        $user= User::findOrFail($data['user_id']);
+        parse_str($info, $data); // Parseamos (pasamos la información ya formateada) la información de $info en $data
+        $user = User::findOrFail($data['user_id']);
         try {
             Mail::to($user)->send(new MessageToStudent(auth()->user()->name, $data['message']));
             $success = true;
@@ -38,11 +39,16 @@ class TeacherController extends Controller
         } catch (\Throwable $th) {
             $success = false;
         }
-        return response()->json(['data'=>$success]);
+        return response()->json(['data' => $success]);
     }
 
     public function courses()
     {
+        $courses = Course::withCount(['students'])
+            ->with('category', 'reviews')
+            ->whereTeacherId(auth()->user()->teacher->id)
+            ->paginate(12);
 
+        return view('teachers.courses', compact('courses'));
     }
 }

@@ -2,6 +2,6 @@
 <li><a class="nav-link" href="{{ route('courses.subscribed') }}">{{ __('Mis cursos') }}</a> </li>
 <li><a class="nav-link" href="{{ route('invoices.admin') }}">{{ __('Mis facturas') }}</a> </li>
 <li><a class="nav-link" href="#">{{ __('Mis suscripciones') }}</a> </li>
-<li><a class="nav-link" href="#">{{ __('Cursos desarrollados por mi') }}</a> </li>
-<li><a class="nav-link" href="{{ route('course.create') }}">{{ __('Crear Curso') }}</a> </li>
+<li><a class="nav-link" href="{{ route('teacher.courses') }}">{{ __('Cursos desarrollados por mi') }}</a> </li>
+<li><a class="nav-link" href="{{ route('courses.create') }}">{{ __('Crear Curso') }}</a> </li>
 @include('partials.navigations.logged')

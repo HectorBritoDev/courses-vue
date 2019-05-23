@@ -51,4 +51,5 @@ class StrenghtPassword implements Rule
     {
         return __('El :attribute debe tener 8 caracteres, un número, una letra mayúscula y una letra minúscula');
     }
+
 }
